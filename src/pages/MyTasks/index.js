@@ -6,21 +6,57 @@ import { useSelector } from "react-redux/es/exports";
 import { useDispatch } from 'react-redux/es/exports'
 import { addModalTask, dragAndDrop, removeTask, turnOnModalAdd } from "../../store/taskSlice/taskSlice";
 import '../pages.css'
-import { addDeletedTask } from "../../store/deletedTasksSlice";
+import { addDeletedTask } from "../../store/deletedTasksSlice/deletedTasksSlice";
 import { removeImportantTask } from "../../store/importantSlice/importantTasksSlice";
 
+
+export const sortFunc = (isProductivite, isEducation, isImportant, isHealth, setTasks, tasksLocal) => {
+    const filtrering = [
+        { name: isProductivite ? 'productiveTag' : '', values: [isProductivite] },
+        { name: isEducation ? 'educationTag' : '', values: [isEducation] },
+        { name: isImportant ? 'importantTag' : '', values: [isImportant] },
+        { name: isHealth ? 'healthTag' : '', values: [isHealth] },
+    ];
+
+    if (isProductivite || isEducation || isImportant || isHealth) {
+        const output = tasksLocal.reduce((acc, curr) => { // Сортировка по нескольким позициям
+            let isNodeSatisfied = false;
+            filtrering.forEach((criteria) => {
+                isNodeSatisfied = isNodeSatisfied || criteria.values.indexOf(curr[criteria.name]) > -1;
+            })
+            if (isNodeSatisfied) {
+                acc.push(curr)
+            }
+            return acc;
+        }, []);
+
+        setTasks(output)
+    } else {
+        setTasks(tasksLocal)
+    }
+}
+
+
 const MyTasks = () => {
+
+    const { isProductivite, isEducation, isHealth, isImportant } = useSelector(store => store.tags)
 
     const tasksRed = useSelector(store => store.tasks.tasks)
     const [tasks, setTasks] = useState([])
 
     const dispatch = useDispatch()
 
+
     // При каждом изменения стора мы берем с localStorage все данные
+
     useEffect(() => {
         const tasksLocal = JSON.parse(localStorage.getItem('task'))
-        setTasks(tasksLocal)
-    }, [tasksRed])
+
+        sortFunc(isProductivite, isEducation, isImportant, isHealth, setTasks, tasksLocal)
+
+    }, [tasksRed, isProductivite, isEducation, isHealth, isImportant])
+
+    
 
     const deletedTask = (item) => {
         dispatch(addDeletedTask(item))
@@ -39,7 +75,7 @@ const MyTasks = () => {
         <div className="myPage">
             <Search />
             <h1>Мои задачи</h1>
-            <TasksList checkTask={checkTask} tasks={tasks} deletedTask={deletedTask} dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))} />
+            <TasksList setTasks={setTasks} checkTask={checkTask} tasks={tasks} deletedTask={deletedTask} dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))} />
             <ModalAddTask />
         </div>
     );

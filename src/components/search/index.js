@@ -2,6 +2,9 @@ import searchIcon from '../../assets/search.svg'
 import './search.css'
 
 const Search = () => {
+
+    
+
     return ( 
         <div className='search'>
             <img src={searchIcon} alt='searchs icon'/>

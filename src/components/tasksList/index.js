@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import dropDownIcon from '../../assets/dropDown.svg'
 import resetIcon from '../../assets/reset.svg'
 import { addImportantTask } from '../../store/importantSlice/importantTasksSlice'
 import { addTask } from '../../store/taskSlice/taskSlice'
-import { useDispatch } from 'react-redux/es/exports'
+import { useDispatch, useSelector } from 'react-redux/es/exports'
 import Checkbox from '../UI/Checkbox'
 import './tasksList.css'
 
-const TasksList = ({ importPage, checkTask, tasks, deletedTask, dispatchFunction, deletedPage }) => {
+const TasksList = ({ setTasks, importPage, checkTask, tasks, deletedTask, dispatchFunction, deletedPage }) => {
 
     const [currentTask, setCurrentTask] = useState(null)
 
     const dispatch = useDispatch()
+
 
 
     const dragOverHandler = (e) => {

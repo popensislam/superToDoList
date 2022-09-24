@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom'
 import { COMPLETED, DELETED, IMPORTANT, MY_TASKS } from '../routes/constants';
-import { useDispatch } from 'react-redux/es/exports';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
 import './sideBar.css'
 import { addModalTask, turnOnModalAdd } from '../../store/taskSlice/taskSlice';
+import { changeEduc, changeHealth, changeImportant, changeProduct } from '../../store/tagsSlice/tagsSlice';
 
 const SideBar = () => {
 
     const dispatch = useDispatch() 
 
-    const [selectedTeg, setSelectedTag] = useState([])
+    const tags = useSelector(store => store.tags)
 
-    const [activeModal, setActiveModal] = useState(false)
 
-    
-
-    const handleChoose = (tag) => {
-        if (selectedTeg.indexOf(tag) != -1) {
-            setSelectedTag([...selectedTeg.filter(item => item !== tag)])
-        } else {
-            setSelectedTag([...selectedTeg, tag])
-        }
+    const handleProduct = () => {
+        dispatch(changeProduct())
     }
+    const handleEduc = () => {
+        dispatch(changeEduc())
+    }
+    const handleHealth = () => {
+        dispatch(changeHealth())
+    }
+    const handleImportant = () => {
+        dispatch(changeImportant())
+    } 
 
     const openModal = () => {
         dispatch(addModalTask([]))
@@ -80,19 +83,19 @@ const SideBar = () => {
                 <span> Удаленные </span>
             </NavLink>
             <span className='teg'>Тэги</span>
-            <div className={selectedTeg.indexOf('Продуктивность') !== -1 ? 'sideBar-teg product choosen' : 'sideBar-teg product'} onClick={() => handleChoose('Продуктивность')}>
+            <div className={tags.isProductivite ? 'sideBar-teg product choosen' : 'sideBar-teg product'} onClick={() => handleProduct()}>
                 <div className='circle'></div>
                 <span>Продуктивность</span>
             </div>
-            <div className={selectedTeg.indexOf('Образование') !== -1 ? 'sideBar-teg educ choosen' : 'sideBar-teg educ'} onClick={() => handleChoose('Образование')}>
+            <div className={tags.isEducation ? 'sideBar-teg educ choosen' : 'sideBar-teg educ'} onClick={() => handleEduc()}>
                 <div className='circle'></div>
                 <span>Образование</span>
             </div>
-            <div className={selectedTeg.indexOf('Здоровье') !== -1 ? 'sideBar-teg healthy choosen' : 'sideBar-teg healthy'} onClick={() => handleChoose('Здоровье')}>
+            <div className={tags.isHealth ? 'sideBar-teg healthy choosen' : 'sideBar-teg healthy'} onClick={() => handleHealth()}>
                 <div className='circle'></div>
                 <span>Здоровье</span>
             </div>
-            <div className={selectedTeg.indexOf('Срочно') !== -1 ? 'sideBar-teg import choosen' : 'sideBar-teg import'} onClick={() => handleChoose('Срочно')}>
+            <div className={tags.isImportant ? 'sideBar-teg import choosen' : 'sideBar-teg import'} onClick={() => handleImportant()}>
                 <div className='circle'></div>
                 <span>Срочно</span>
             </div>

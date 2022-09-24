@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import tasks from './taskSlice/taskSlice'
 import importantTasks from './importantSlice/importantTasksSlice'
-import deletedTasks from './deletedTasksSlice/index'
+import deletedTasks from './deletedTasksSlice/deletedTasksSlice'
+import tags from './tagsSlice/tagsSlice'
 
 
 
@@ -11,6 +12,7 @@ export const store = configureStore({
         tasks: tasks,
         importantTasks: importantTasks,
         deletedTasks: deletedTasks,
+        tags: tags
     }
 })
 

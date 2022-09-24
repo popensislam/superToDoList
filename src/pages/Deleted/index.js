@@ -4,12 +4,15 @@ import TasksList from "../../components/tasksList";
 import { useSelector, useDispatch } from "react-redux/es/exports";
 import { useEffect, useState } from "react";
 import '../pages.css'
-import { dragAndDropDeleted, resetDeletedTask } from "../../store/deletedTasksSlice";
+import { dragAndDropDeleted, resetDeletedTask } from "../../store/deletedTasksSlice/deletedTasksSlice";
 import { addTask } from "../../store/taskSlice/taskSlice";
 import { addImportantTask } from "../../store/importantSlice/importantTasksSlice";
+import { sortFunc } from "../MyTasks";
 
 
 const Deleted = () => {
+
+    const { isProductivite, isEducation, isHealth, isImportant } = useSelector(store => store.tags)
 
     const tasksRed = useSelector(store => store.deletedTasks.deletedTasks)
 
@@ -19,8 +22,10 @@ const Deleted = () => {
 
     useEffect(() => {
         const tasksLocal = JSON.parse(localStorage.getItem('deletedTask'))
-        setTasks(tasksLocal)
-    }, [tasksRed])
+
+        sortFunc(isProductivite, isEducation, isImportant, isHealth, setTasks, tasksLocal)
+
+    }, [tasksRed, isProductivite, isEducation, isHealth, isImportant])
 
 
     const deletedTask = (item) => {
@@ -28,7 +33,7 @@ const Deleted = () => {
         dispatch(addTask(item))
         if (item.star) {
             dispatch(addImportantTask(item))
-        } 
+        }
     }
 
     return (

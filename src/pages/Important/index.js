@@ -3,12 +3,15 @@ import { useSelector, useDispatch } from "react-redux/es/exports";
 import ModalAddTask from "../../components/modalAddTask";
 import Search from "../../components/search";
 import TasksList from "../../components/tasksList";
-import { addDeletedTask } from "../../store/deletedTasksSlice";
+import { addDeletedTask } from "../../store/deletedTasksSlice/deletedTasksSlice";
 import { dragAndDropImportant, removeImportantTask } from "../../store/importantSlice/importantTasksSlice";
 import { addModalTask, removeTask, turnOnModalAdd } from "../../store/taskSlice/taskSlice";
+import { sortFunc } from "../MyTasks";
 import '../pages.css'
 
 const Important = () => {
+
+    const { isProductivite, isEducation, isHealth, isImportant } = useSelector(store => store.tags)
 
     const tasksRed = useSelector(store => store.importantTasks.importantTasks)
 
@@ -19,8 +22,10 @@ const Important = () => {
     // При каждом изменения стора мы берем с localStorage все данные
     useEffect(() => {
         const tasksLocal = JSON.parse(localStorage.getItem('importantTask'))
-        setTasks(tasksLocal)
-    }, [tasksRed])
+
+        sortFunc(isProductivite, isEducation, isImportant, isHealth, setTasks, tasksLocal)
+        
+    }, [tasksRed, isProductivite, isEducation, isHealth, isImportant])
 
     const deletedTask = (item) => {
         dispatch(addDeletedTask(item))

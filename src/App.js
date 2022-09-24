@@ -6,7 +6,7 @@ import SideBar from './components/sideBar';
 import { useDispatch } from 'react-redux'
 import { connectLocal } from './store/taskSlice/taskSlice';
 import { connectLocalImportant } from './store/importantSlice/importantTasksSlice';
-import { connectLocalDeleted } from './store/deletedTasksSlice';
+import { connectLocalDeleted } from './store/deletedTasksSlice/deletedTasksSlice';
 
 function App() {
 
