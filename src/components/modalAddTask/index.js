@@ -154,6 +154,14 @@ const ModalAddTask = () => {
 
             dispatch(turnOffModalAdd())
 
+            setProductActive(false)
+            setHealthActive(false)
+            setEducActive(false)
+            setImportActive(false)
+            setStarTask(false)
+            setValue({ name: '', desc: '' })
+            setDate('')
+
         } else {
             setError({
                 ...error,
@@ -191,8 +199,8 @@ const ModalAddTask = () => {
                 </div>
                 <div className='modal-item date' style={{ position: 'relative' }}>
                     <label>Дата и время окончания</label>
-                    <input value={date} style={{ color: '#fff' }} className={error.date ? 'error' : ''} type='text' placeholder='Выберите время и дату' disabled />
-                    <img onClick={() => setActiveCalendar(!activeCalendar)} className='date-icon' src={dateIcon} alt='dates icon' />
+                    <input value={date} onClick={() => setActiveCalendar(!activeCalendar)} style={{ color: '#fff', cursor: 'pointer' }} className={error.date ? 'error' : ''} type='text' placeholder='Выберите время и дату' />
+                    <img className='date-icon' src={dateIcon} alt='dates icon' />
                     <p className='errorText'>{error.date}</p>
                     <Datepicker onChangeDate={onChangeDate} onChangeTime={onChangeTime} timeWrited={timeWrited} setTimeWrited={setTimeWrited} choosenDate={choosenDate} setChoosenDate={setChoosenDate} activeCalendar={activeCalendar} />
                 </div>

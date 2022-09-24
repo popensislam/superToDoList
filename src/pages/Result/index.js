@@ -8,10 +8,14 @@ import { addModalTask, dragAndDrop, removeTask, turnOnModalAdd } from "../../sto
 import '../pages.css'
 import { addDeletedTask } from "../../store/deletedTasksSlice/deletedTasksSlice";
 import { removeImportantTask } from "../../store/importantSlice/importantTasksSlice";
+import { sortFunc } from "../MyTasks";
 
 const Result = () => {
 
+
     const { isProductivite, isEducation, isHealth, isImportant } = useSelector(store => store.tags)
+
+    const { searchValue } = useSelector(store => store.tasks)
 
     const tasksRed = useSelector(store => store.tasks.tasks)
     const [tasks, setTasks] = useState([])
@@ -20,9 +24,16 @@ const Result = () => {
 
     useEffect(() => {
         const tasksLocal = JSON.parse(localStorage.getItem('task'))
-        setTasks(tasksLocal)
+        if (searchValue) {
 
-    }, [tasksRed])
+            const searchTasks = tasksLocal.filter(item => item.title.toLowerCase().indexOf(searchValue.toLowerCase()) != -1)
+
+            sortFunc(isProductivite, isEducation, isImportant, isHealth, setTasks, searchTasks)
+
+        } else {
+            setTasks([])
+        }
+    }, [tasksRed, searchValue, isProductivite, isEducation, isHealth, isImportant])
 
     const deletedTask = (item) => {
         dispatch(addDeletedTask(item))
@@ -37,11 +48,16 @@ const Result = () => {
         dispatch(turnOnModalAdd())
     }
 
+    const makeBold = (item) => {
+        const re = new RegExp(searchValue, "g")
+        return item.replace(re, "<b>" + searchValue + "</b>")
+    };
+
     return (
         <div className="myPage">
             <Search />
             <h1>Результаты</h1>
-            <TasksList setTasks={setTasks} checkTask={checkTask} tasks={tasks} deletedTask={deletedTask} dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))} />
+            <TasksList isResult={true} makeBold={makeBold} setTasks={setTasks} checkTask={checkTask} tasks={tasks} deletedTask={deletedTask} dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))} />
             <ModalAddTask />
         </div>
     );

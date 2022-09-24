@@ -86,3 +86,24 @@
 .reset:hover {
   transform: rotate(-360deg);
 }
+
+.task-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-wrapper {
+  max-height: 70%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.more {
+  margin-top: 15px;
+  font-size: 15px;
+  line-height: 21px;
+  text-align: center;
+  color: #b9b9c3;
+  cursor: pointer;
+}

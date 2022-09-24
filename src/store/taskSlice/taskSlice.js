@@ -4,6 +4,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     modalAdd: false,
     modalTask: [],
+    searchTasks: [],
+    searchTasks: '',
     tasks: [],
     importantTasks: [],
     completedTasks: [],
@@ -18,6 +20,9 @@ export const taskSlice = createSlice({
     reducers: {
         addModalTask: (state, { payload }) => {
             state.modalTask = payload
+        },
+        addSearchValue: (state, {payload}) => {
+            state.searchValue = payload
         },
         turnOnModalAdd: (state) => {
             state.modalAdd = true
@@ -53,6 +58,6 @@ export const taskSlice = createSlice({
 })
 
 
-export const { addModalTask, turnOnModalAdd, turnOffModalAdd, addTask, connectLocal, dragAndDrop, removeTask } = taskSlice.actions
+export const { addSearchValue, addModalTask, turnOnModalAdd, turnOffModalAdd, addTask, connectLocal, dragAndDrop, removeTask } = taskSlice.actions
 
 export default taskSlice.reducer

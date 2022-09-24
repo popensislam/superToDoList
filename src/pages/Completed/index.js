@@ -21,10 +21,10 @@ const Completed = () => {
 
     // При каждом изменения стора мы берем с localStorage все данные
     useEffect(() => {
-        const tasksLocal = JSON.parse(localStorage.getItem('task'))
+        const tasksLocal = JSON.parse(localStorage.getItem('task')).filter(item => item.isCompleted === true)
 
         sortFunc(isProductivite, isEducation, isImportant, isHealth, setTasks, tasksLocal)
-        
+
     }, [tasksRed, isProductivite, isEducation, isHealth, isImportant])
 
     const deletedTask = (item) => {

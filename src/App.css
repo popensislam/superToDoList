@@ -3,6 +3,30 @@
   padding: 0;
   border: 0;
 }
+
+*,
+html * /* override x.xhtml.ru style */ 
+{
+  scrollbar-width: thin;
+  scrollbar-color: #161D31 #31394C;
+}
+
+*::-webkit-scrollbar,
+html *::-webkit-scrollbar {
+  height: 12px;
+  width: 12px;
+}
+*::-webkit-scrollbar-track,
+html *::-webkit-scrollbar-track {
+  background: #31394C;
+}
+*::-webkit-scrollbar-thumb,
+html *::-webkit-scrollbar-thumb {
+  background-color: #161D31;
+  border-radius: 5px;
+  border: 4px solid #31394C;
+}
+
 a {
   text-decoration: none;
 }
@@ -31,7 +55,7 @@ a {
 .wrapper {
   display: flex;
   width: 100%;
-  height: 513px;
+  height: 550px;
   background: #283046;
   border: 1px solid #3B4253;
   border-radius: 0px 8px 8px 0px;
