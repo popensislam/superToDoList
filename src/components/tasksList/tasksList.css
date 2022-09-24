@@ -107,3 +107,75 @@
   color: #b9b9c3;
   cursor: pointer;
 }
+.item-flex-date {
+  width: 140px;
+  text-align: right;
+}
+.item-flex-icons {
+  display: flex;
+  align-items: center;
+}
+.item-flex-icons img {
+  margin-left: 10px;
+}
+
+@media (max-width: 1470px) {
+  .tag-item {
+    padding: 10px 10px;
+    margin-left: 10px;
+    font-size: 0;
+  }
+  .productive {
+    background: #7367f0;
+  }
+  .education {
+    background: #28c76f;
+  }
+  .health {
+    background: #ff9f43;
+  }
+  .important {
+    background: #ea5455;
+  }
+}
+
+@media (max-width: 1020px) {
+  .list-wrapper {
+    max-height: 60%;
+    width: 100%;
+    overflow-y: scroll;
+  }
+}
+
+@media (max-width: 820px) {
+  .list-wrapper {
+    max-height: 65%;
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 10px 20px;
+  }
+  .item-flex {
+    margin-bottom: 20px;
+  }
+  .title {
+    margin: 0 0 20px 10px
+  }
+  .atributes {
+    display: flex;
+    justify-content: space-between;
+  }
+  .item-flex-tags {
+    width: 120px;
+  }
+  .item-flex-date {
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 530px) {
+  .list-wrapper {
+    max-height: 75%;
+  }
+}
