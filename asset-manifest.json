@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/superToDoList/static/css/main.061b5f03.css",
-    "main.js": "/superToDoList/static/js/main.380ac11c.js",
+    "main.css": "/superToDoList/static/css/main.37ccbd0b.css",
+    "main.js": "/superToDoList/static/js/main.a3a52478.js",
     "static/media/Montserrat-Regular.ttf": "/superToDoList/static/media/Montserrat-Regular.ceb11275ab638627a643.ttf",
     "static/media/Montserrat-Black.ttf": "/superToDoList/static/media/Montserrat-Black.08437fd0aa82576d3678.ttf",
     "static/media/reset.svg": "/superToDoList/static/media/reset.2b7c23db73eac06097e0c40745a5665c.svg",
@@ -13,11 +13,11 @@
     "static/media/arrow.svg": "/superToDoList/static/media/arrow.a5a37f96b77dea22bb7cf51cfa7cf033.svg",
     "index.html": "/superToDoList/index.html",
     "static/media/path.svg": "/superToDoList/static/media/path.8c666ca480c987849f7a.svg",
-    "main.061b5f03.css.map": "/superToDoList/static/css/main.061b5f03.css.map",
-    "main.380ac11c.js.map": "/superToDoList/static/js/main.380ac11c.js.map"
+    "main.37ccbd0b.css.map": "/superToDoList/static/css/main.37ccbd0b.css.map",
+    "main.a3a52478.js.map": "/superToDoList/static/js/main.a3a52478.js.map"
   },
   "entrypoints": [
-    "static/css/main.061b5f03.css",
-    "static/js/main.380ac11c.js"
+    "static/css/main.37ccbd0b.css",
+    "static/js/main.a3a52478.js"
   ]
 }
