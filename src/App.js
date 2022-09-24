@@ -15,6 +15,8 @@ function App() {
   const importantTasks = JSON.parse(localStorage.getItem('importantTask'))
   const deletedTasks = JSON.parse(localStorage.getItem('deletedTask'))
 
+  // При обновлении страницы все из localStorage обратно записыватся в redux
+
   useEffect(() => {
     if (tasks) dispatch(connectLocal(tasks))
   }, [])

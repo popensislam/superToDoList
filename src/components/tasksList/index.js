@@ -13,8 +13,6 @@ const TasksList = ({ isResult, makeBold, importPage, checkTask, tasks, deletedTa
 
     const dispatch = useDispatch()
 
-
-
     const dragOverHandler = (e) => {
         e.preventDefault()
         e.target.style.boxShadow = '0px 0px 5px #fff'
@@ -57,22 +55,20 @@ const TasksList = ({ isResult, makeBold, importPage, checkTask, tasks, deletedTa
     }
 
 
-    const onChangeCompleted = (task) => {
-
-        dispatch(addTask({ ...task, isCompleted: !task.isCompleted }))
+    const onChangeCompleted = (task) => { // изменяем параметр выполненно в тасках и важных тасках
+        dispatch(addTask({ ...task, isCompleted: !task?.isCompleted }))
 
         if (task.star) {
-            dispatch(addImportantTask({ ...task, isCompleted: !task.isCompleted }))
+            dispatch(addImportantTask({ ...task, isCompleted: !task?.isCompleted }))
         }
     }
 
     const [taskLength, setTaskLength] = useState(6)
 
-    console.log(taskLength)
-
     return (
         <div className='task-list'>
             <div className='list-wrapper'>
+                {/* Сортируем для drag and drop и обрезаем массив для функционала показать еще */}
                 {tasks?.sort(sortTasks)?.slice(0, taskLength)?.map((task, i) =>
                     <div
                         className="item"
@@ -108,6 +104,7 @@ const TasksList = ({ isResult, makeBold, importPage, checkTask, tasks, deletedTa
                         </div>
                         <div className='item-flex atributes'>
                             <div className='item-flex-tags'>
+                                {/* Выводим только имеющие теги */}
                                 {task.productiveTag && (
                                     <span className='tag-item productive'>Продуктивность</span>
                                 )}
@@ -145,7 +142,7 @@ const TasksList = ({ isResult, makeBold, importPage, checkTask, tasks, deletedTa
                 )}
             </div>
             {
-                tasks.length > taskLength && (
+                tasks?.length > taskLength && (
                     <div className='more' onClick={() => setTaskLength(prev => prev + 5)}>Показать еще 5</div>
 
                 )}

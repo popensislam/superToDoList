@@ -4,10 +4,10 @@ import Search from "../../components/search";
 import TasksList from "../../components/tasksList";
 import { useSelector } from "react-redux/es/exports";
 import { useDispatch } from 'react-redux/es/exports'
-import { addModalTask, dragAndDrop, removeTask, turnOnModalAdd } from "../../store/taskSlice/taskSlice";
+import { addModalTask, deleteTask, dragAndDrop, removeTask, turnOnModalAdd } from "../../store/taskSlice/taskSlice";
 import '../pages.css'
 import { addDeletedTask } from "../../store/deletedTasksSlice/deletedTasksSlice";
-import { removeImportantTask } from "../../store/importantSlice/importantTasksSlice";
+import { deleteImportantTask, removeImportantTask } from "../../store/importantSlice/importantTasksSlice";
 import { sortFunc } from "../MyTasks";
 
 const Completed = () => {
@@ -19,7 +19,8 @@ const Completed = () => {
 
     const dispatch = useDispatch()
 
-    // При каждом изменения стора мы берем с localStorage все данные
+    // При каждом изменения стора мы берем с localStorage все данные и фильтруем по выполненным
+
     useEffect(() => {
         const tasksLocal = JSON.parse(localStorage.getItem('task')).filter(item => item.isCompleted === true)
 
@@ -40,12 +41,22 @@ const Completed = () => {
         dispatch(turnOnModalAdd())
     }
 
+    const deleteTaskModal = (item) => {
+        dispatch(deleteTask(item))
+        dispatch(deleteImportantTask(item))
+    }
+
     return (
         <div className="myPage">
             <Search />
             <h1>Выполненные</h1>
-            <TasksList checkTask={checkTask} tasks={tasks} deletedTask={deletedTask} dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))} />
-            <ModalAddTask />
+            <TasksList
+                checkTask={checkTask}
+                tasks={tasks}
+                deletedTask={deletedTask}
+                dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))}
+            />
+            <ModalAddTask deleteTask={deleteTaskModal} />
         </div>
     );
 }

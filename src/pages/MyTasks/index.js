@@ -4,10 +4,10 @@ import Search from "../../components/search";
 import TasksList from "../../components/tasksList";
 import { useSelector } from "react-redux/es/exports";
 import { useDispatch } from 'react-redux/es/exports'
-import { addModalTask, dragAndDrop, removeTask, turnOnModalAdd } from "../../store/taskSlice/taskSlice";
+import { addModalTask, dragAndDrop, removeTask, turnOnModalAdd, deleteTask } from "../../store/taskSlice/taskSlice";
 import '../pages.css'
 import { addDeletedTask } from "../../store/deletedTasksSlice/deletedTasksSlice";
-import { removeImportantTask } from "../../store/importantSlice/importantTasksSlice";
+import { deleteImportantTask, removeImportantTask } from "../../store/importantSlice/importantTasksSlice";
 
 
 export const sortFunc = (isProductivite, isEducation, isImportant, isHealth, setTasks, tasksLocal) => {
@@ -21,7 +21,7 @@ export const sortFunc = (isProductivite, isEducation, isImportant, isHealth, set
     if (isProductivite || isEducation || isImportant || isHealth) {
         const output = tasksLocal.reduce((acc, curr) => { // Сортировка по нескольким позициям
             let isNodeSatisfied = false;
-            filtrering.forEach((criteria) => {
+            filtrering.forEach((criteria) => { // Проверяем по параметру и если существует пушим в аккум
                 isNodeSatisfied = isNodeSatisfied || criteria.values.indexOf(curr[criteria.name]) > -1;
             })
             if (isNodeSatisfied) {
@@ -56,7 +56,7 @@ const MyTasks = () => {
 
     }, [tasksRed, isProductivite, isEducation, isHealth, isImportant])
 
-    
+
 
     const deletedTask = (item) => {
         dispatch(addDeletedTask(item))
@@ -71,12 +71,23 @@ const MyTasks = () => {
         dispatch(turnOnModalAdd())
     }
 
+    const deleteTaskModal = (item) => {
+        dispatch(deleteTask(item))
+        dispatch(deleteImportantTask(item))
+    }
+
     return (
         <div className="myPage">
             <Search />
             <h1>Мои задачи</h1>
-            <TasksList setTasks={setTasks} checkTask={checkTask} tasks={tasks} deletedTask={deletedTask} dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))} />
-            <ModalAddTask />
+            <TasksList
+                setTasks={setTasks}
+                checkTask={checkTask}
+                tasks={tasks}
+                deletedTask={deletedTask}
+                dispatchFunction={(newTasks) => dispatch(dragAndDrop(newTasks))}
+            />
+            <ModalAddTask deleteTask={deleteTaskModal} />
         </div>
     );
 }

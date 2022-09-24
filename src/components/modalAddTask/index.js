@@ -1,4 +1,3 @@
-import './modal.css'
 import starIcon from '../../assets/star.svg'
 import closeIcon from '../../assets/close.svg'
 import dateIcon from '../../assets/date.svg'
@@ -6,10 +5,11 @@ import Datepicker from '../UI/Datepicker';
 import { useEffect, useState } from 'react';
 import Checkbox from '../UI/Checkbox';
 import { useDispatch, useSelector } from 'react-redux';
-import { turnOffModalAdd, addTask } from '../../store/taskSlice/taskSlice';
+import { turnOffModalAdd, addTask, deleteTask } from '../../store/taskSlice/taskSlice';
 import { addImportantTask, removeImportantTask } from '../../store/importantSlice/importantTasksSlice';
+import './modal.css'
 
-const ModalAddTask = () => {
+const ModalAddTask = ({ deleteTask }) => {
 
     const dispatch = useDispatch()
 
@@ -55,27 +55,35 @@ const ModalAddTask = () => {
         })
     }
 
-    const [productActive, setProductActive] = useState(false)
-    const [healthActive, setHealthActive] = useState(false)
-    const [educActive, setEducActive] = useState(false)
-    const [importActive, setImportActive] = useState(false)
-    const [starTask, setStarTask] = useState(false)
+    const [booleanValue, setBooleanValue] = useState({
+        productActive: false,
+        healthActive: false,
+        educActive: false,
+        importActive: false,
+        starTask: false
+    })
 
+
+    // Модальное окно открывается с переданным таском тогда заполняю все поля данными, в ином очищаю
     useEffect(() => {
         if (task.length !== 0) {
-            setProductActive(task.productiveTag)
-            setHealthActive(task.healthTag)
-            setEducActive(task.educationTag)
-            setImportActive(task.importantTag)
-            setStarTask(task.star)
+            setBooleanValue = ({
+                productActive: task.productiveTag,
+                healthActive: task.healthTag,
+                educActive: task.educationTag,
+                importActive: task.importantTag,
+                starTask: task.star
+            })
             setValue({ name: task.title, desc: task.description })
             setDate(task.date)
         } else {
-            setProductActive(false)
-            setHealthActive(false)
-            setEducActive(false)
-            setImportActive(false)
-            setStarTask(false)
+            setBooleanValue({
+                productActive: '',
+                healthActive: '',
+                educActive: '',
+                importActive: '',
+                starTask: ''
+            })
             setValue({ name: '', desc: '' })
             setDate('')
         }
@@ -89,8 +97,11 @@ const ModalAddTask = () => {
         tag: ''
     })
 
+
+    // Проверяю все поля на валидность, в случае вывожу ошибку
+
     const addTaskModal = () => {
-        if (productActive || healthActive || educActive || importActive) {
+        if (booleanValue.productActive || booleanValue.healthActive || booleanValue.educActive || booleanValue.importActive) {
 
             if (!value.name) {
                 setValue({
@@ -103,6 +114,7 @@ const ModalAddTask = () => {
                         name: ''
                     })
                 }, 3000)
+                return
             }
 
             if (!value.desc) {
@@ -116,6 +128,7 @@ const ModalAddTask = () => {
                         desc: ''
                     })
                 }, 3000)
+                return
             }
 
             if (!date) {
@@ -129,6 +142,7 @@ const ModalAddTask = () => {
                         date: ''
                     })
                 }, 3000)
+                return
             }
 
             const newTask = {
@@ -136,15 +150,15 @@ const ModalAddTask = () => {
                 title: value.name,
                 description: value.desc,
                 date: date,
-                star: starTask,
-                productiveTag: productActive,
-                healthTag: healthActive,
-                educationTag: educActive,
-                importantTag: importActive,
+                star: booleanValue.starTask,
+                productiveTag: booleanValue.productActive,
+                healthTag: booleanValue.healthActive,
+                educationTag: booleanValue.educActive,
+                importantTag: booleanValue.importActive,
                 isCompleted: false
             }
 
-            if (starTask === true) {
+            if (booleanValue.starTask === true) {
                 dispatch(addImportantTask(newTask))
                 dispatch(addTask(newTask))
             } else {
@@ -154,11 +168,13 @@ const ModalAddTask = () => {
 
             dispatch(turnOffModalAdd())
 
-            setProductActive(false)
-            setHealthActive(false)
-            setEducActive(false)
-            setImportActive(false)
-            setStarTask(false)
+            setBooleanValue({
+                productActive: '',
+                healthActive: '',
+                educActive: '',
+                importActive: '',
+                starTask: ''
+            })
             setValue({ name: '', desc: '' })
             setDate('')
 
@@ -176,57 +192,117 @@ const ModalAddTask = () => {
         }
     }
 
+    const deleteTaskModal = (item) => {
+        if (item?.length != 0) {
+            deleteTask(item)
+        }
+        dispatch(turnOffModalAdd())
+    }
+
     return (
         <div className="modal" style={modalAdd ? {} : { display: 'none' }}>
+            <div style={{ width: '100%', height: '100%' }} onClick={() => dispatch(turnOffModalAdd())}></div>
             <div className='modal-wrapper'>
                 <div className='modal-header'>
                     <span>Задача</span>
                     <div className='icons'>
                         <img src={starIcon} alt='stars icon' />
-                        <img src={closeIcon} alt='closes icon' onClick={() => dispatch(turnOffModalAdd())} style={{ cursor: 'pointer' }} />
+                        <img
+                            src={closeIcon}
+                            alt='closes icon'
+                            onClick={() => dispatch(turnOffModalAdd())}
+                            style={{ cursor: 'pointer' }}
+                        />
                     </div>
                 </div>
                 <div className='modal-item'>
                     <label>Название</label>
-                    <input value={value.name} className={error.name ? 'error' : ''} name='name' onChange={e => handleOnChangeValue(e)} type='text' placeholder='Название задачи' />
+                    <input
+                        value={value.name}
+                        className={error.name ? 'error' : ''}
+                        name='name'
+                        onChange={e => handleOnChangeValue(e)}
+                        type='text'
+                        placeholder='Название задачи'
+                    />
                     <p className='errorText'>{error.name}</p>
-
                 </div>
                 <div className='modal-item check'>
-                    <Checkbox id='modal-important' checked={starTask} onChangeCheck={() => setStarTask(!starTask)}>
+                    <Checkbox
+                        id='modal-important'
+                        checked={booleanValue.starTask}
+                        onChangeCheck={() => setBooleanValue({ ...booleanValue, starTask: !booleanValue.starTask })}
+                    >
                         Важная задача
                     </Checkbox>
                 </div>
                 <div className='modal-item date' style={{ position: 'relative' }}>
                     <label>Дата и время окончания</label>
-                    <input value={date} onClick={() => setActiveCalendar(!activeCalendar)} style={{ color: '#fff', cursor: 'pointer' }} className={error.date ? 'error' : ''} type='text' placeholder='Выберите время и дату' />
+                    <input
+                        value={date}
+                        onClick={() => setActiveCalendar(!activeCalendar)}
+                        style={{ color: '#fff', cursor: 'pointer' }}
+                        className={error.date ? 'error' : ''}
+                        type='text'
+                        placeholder='Выберите время и дату'
+                        readOnly
+                    />
                     <img className='date-icon' src={dateIcon} alt='dates icon' />
                     <p className='errorText'>{error.date}</p>
-                    <Datepicker onChangeDate={onChangeDate} onChangeTime={onChangeTime} timeWrited={timeWrited} setTimeWrited={setTimeWrited} choosenDate={choosenDate} setChoosenDate={setChoosenDate} activeCalendar={activeCalendar} />
+                    <Datepicker
+                        onChangeDate={onChangeDate}
+                        onChangeTime={onChangeTime}
+                        timeWrited={timeWrited}
+                        setTimeWrited={setTimeWrited}
+                        choosenDate={choosenDate}
+                        setChoosenDate={setChoosenDate}
+                        activeCalendar={activeCalendar}
+                    />
                 </div>
                 <div className='modal-item description'>
                     <label>Описание</label>
-                    <textarea value={value.desc} name='desc' className={error.desc ? 'error' : ''} onChange={e => handleOnChangeValue(e)} placeholder='Опишите задачу' />
+                    <textarea
+                        value={value.desc}
+                        name='desc'
+                        className={error.desc ? 'error' : ''}
+                        onChange={e => handleOnChangeValue(e)}
+                        placeholder='Опишите задачу'
+                        style={{ resize: 'none' }}
+                    />
                     <p className='errorText'>{error.desc}</p>
                 </div>
                 <div className='modal-tags'>
                     <span>Теги</span>
                     <div className='modal-tags-items'>
-                        <Checkbox id='product' checked={productActive} onChangeCheck={() => setProductActive(!productActive)}>Продуктивный</Checkbox>
-                        <Checkbox id='health' checked={healthActive} onChangeCheck={() => setHealthActive(!healthActive)}>Здоровье</Checkbox>
-                        <Checkbox id='educ' checked={educActive} onChangeCheck={() => setEducActive(!educActive)}>Образование</Checkbox>
-                        <Checkbox id='import' checked={importActive} onChangeCheck={() => setImportActive(!importActive)}>Срочно</Checkbox>
+                        <Checkbox
+                            id='product'
+                            checked={booleanValue.productActive}
+                            onChangeCheck={() => setBooleanValue({ ...booleanValue, productActive: !booleanValue.productActive })}>
+                            Продуктивный
+                        </Checkbox>
+                        <Checkbox
+                            id='health'
+                            checked={booleanValue.healthActive}
+                            onChangeCheck={() => setBooleanValue({ ...booleanValue, healthActive: !booleanValue.healthActive })}>
+                            Здоровье
+                        </Checkbox>
+                        <Checkbox
+                            id='educ'
+                            checked={booleanValue.educActive}
+                            onChangeCheck={() => setBooleanValue({ ...booleanValue, educActive: !booleanValue.educActive })}>
+                            Образование
+                        </Checkbox>
+                        <Checkbox
+                            id='import'
+                            checked={booleanValue.importActive}
+                            onChangeCheck={() => setBooleanValue({ ...booleanValue, importActive: !booleanValue.importActive })}>
+                            Срочно
+                        </Checkbox>
                     </div>
                     <p className='errorText' style={{ marginTop: '5px' }}>{error.tag}</p>
                     <div className='modal-btn'>
-                        {
-                            task.length != 0
-                                ?
-                                <button className='add' onClick={() => addTaskModal()}>Сохранить</button>
-                                :
-                                <button className='add' onClick={() => addTaskModal()}>Добавить</button>
-                        }
-                        <button className='delete'>Удалить</button>
+                        <button className='add' onClick={() => addTaskModal()}>{task?.length != 0 ? 'Сохранить' : 'Добавить'}</button>
+                        <button className='delete' onClick={() => deleteTaskModal(task)}>Удалить</button>
                     </div>
                 </div>
             </div>

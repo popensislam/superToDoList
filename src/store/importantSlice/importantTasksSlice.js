@@ -25,6 +25,9 @@ export const importantTasksSlice = createSlice({
                 state.importantTasks.push(payload)
             }
         },
+        deleteImportantTask: (state, {payload}) => {
+            state.importantTasks = state.importantTasks.filter(item => item.id != payload.id)
+        },
         removeImportantTask: (state, {payload}) => {
             state.importantTasks = state.importantTasks.filter(item => item.id != payload.id)
         },
@@ -38,6 +41,6 @@ export const importantTasksSlice = createSlice({
 })
 
 
-export const { addImportantTask, removeImportantTask, connectLocalImportant, dragAndDropImportant } = importantTasksSlice.actions 
+export const { deleteImportantTask, addImportantTask, removeImportantTask, connectLocalImportant, dragAndDropImportant } = importantTasksSlice.actions 
 
 export default importantTasksSlice.reducer

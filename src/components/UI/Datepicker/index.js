@@ -2,20 +2,19 @@ import moment from "moment";
 import { useState } from "react";
 import Calendar from "../Calendar";
 
-const Datepicker = ({ onChangeDate, onChangeTime, timeWrited, setTimeWrited, choosenDate, setChoosenDate, activeCalendar }) => {
+const Datepicker = ({ onChangeTime, timeWrited, choosenDate, setChoosenDate, activeCalendar }) => {
 
     const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 
-    const [active, setActive] = useState(false)
     const [today, setToday] = useState(moment())
 
     const startDay = today.clone().startOf('month').startOf('week')
     const currentMonth = today.clone().format('MMMM')
     const currentYear = today.clone().format('YYYY')
-    const currentDay = moment().clone()
     const flexibleCurrentMonth = today.clone()
     const day = startDay.clone()
-    const daysArray = [...Array(42)].map(() => day.add(1, 'day').clone())
+
+    const daysArray = [...Array(42)].map(() => day.add(1, 'day').clone()) // Заполняю массив датами
 
     const handlePrevMonth = () => {
         setToday(prev => prev.clone().subtract(1, 'month'))
@@ -33,8 +32,6 @@ const Datepicker = ({ onChangeDate, onChangeTime, timeWrited, setTimeWrited, cho
                 currentMonth={currentMonth}
                 flexibleCurrentMonth={flexibleCurrentMonth}
                 daysArray={daysArray}
-                currentDay={currentDay}
-                setActive={setActive}
                 days={days}
                 setChoosenDate={setChoosenDate}
                 choosenDate={choosenDate}

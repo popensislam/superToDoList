@@ -40,7 +40,12 @@ const Deleted = () => {
         <div className="myPage">
             <Search />
             <h1>Удаленные</h1>
-            <TasksList tasks={tasks} deletedTask={deletedTask} dispatchFunction={(newTask) => dispatch(dragAndDropDeleted(newTask))} deletedPage={true} />
+            <TasksList
+                tasks={tasks}
+                deletedTask={deletedTask}
+                dispatchFunction={(newTask) => dispatch(dragAndDropDeleted(newTask))}
+                deletedPage={true}
+            />
             <ModalAddTask />
         </div>
     );

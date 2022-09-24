@@ -32,7 +32,7 @@ export const taskSlice = createSlice({
         },
         addTask: (state, { payload }) => {
             const foundTask = state.tasks.find(item => item.id === payload.id)
-            if (foundTask) {
+            if (foundTask) { // условтя на изменения существующего таска в том же порядке
                 const newState = state.tasks.map(item => {
                     if (item.id === foundTask.id) {
                         return { ...payload }
@@ -44,6 +44,9 @@ export const taskSlice = createSlice({
             } else {
                 state.tasks.push(payload)
             }
+        },
+        deleteTask: (state, {payload}) => {
+            state.tasks = state.tasks.filter(item => item.id != payload.id)
         },
         removeTask: (state, { payload }) => {
             state.tasks = state.tasks.filter(item => item.id != payload.id)
@@ -58,6 +61,6 @@ export const taskSlice = createSlice({
 })
 
 
-export const { addSearchValue, addModalTask, turnOnModalAdd, turnOffModalAdd, addTask, connectLocal, dragAndDrop, removeTask } = taskSlice.actions
+export const { deleteTask, addSearchValue, addModalTask, turnOnModalAdd, turnOffModalAdd, addTask, connectLocal, dragAndDrop, removeTask } = taskSlice.actions
 
 export default taskSlice.reducer

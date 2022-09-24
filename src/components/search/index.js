@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux/es/exports'
 import './search.css'
 import { useState } from 'react'
 import { addSearchValue } from '../../store/taskSlice/taskSlice'
+import { RESULT } from '../routes/constants'
 
 const Search = () => {
 
@@ -18,7 +19,7 @@ const Search = () => {
     
         dispatch(addSearchValue(value))
         
-        navigate('/result')
+        navigate(RESULT)
       }
 
     return (
