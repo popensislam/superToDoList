@@ -67,10 +67,10 @@ const ModalAddTask = ({ deleteTask }) => {
     // Модальное окно открывается с переданным таском тогда заполняю все поля данными, в ином очищаю
     useEffect(() => {
         if (task.length !== 0) {
-            setBooleanValue = ({
+            setBooleanValue({
                 productActive: task.productiveTag,
                 healthActive: task.healthTag,
-                educActive: task.educationTag,
+                educActive: task.educationTag,   
                 importActive: task.importantTag,
                 starTask: task.star
             })
@@ -78,11 +78,11 @@ const ModalAddTask = ({ deleteTask }) => {
             setDate(task.date)
         } else {
             setBooleanValue({
-                productActive: '',
-                healthActive: '',
-                educActive: '',
-                importActive: '',
-                starTask: ''
+                productActive: false,
+                healthActive: false,
+                educActive: false,
+                importActive: false,
+                starTask: false
             })
             setValue({ name: '', desc: '' })
             setDate('')
